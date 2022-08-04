@@ -1,0 +1,5 @@
+ <launch>
+<node name="map_server" pkg="map_server" type="map_server" args="$(find ebot_nav)/map/marsyard_updated_v5.yaml" output="screen">
+    <param name="frame_id" value="map"/>
+  </node>
+</launch>

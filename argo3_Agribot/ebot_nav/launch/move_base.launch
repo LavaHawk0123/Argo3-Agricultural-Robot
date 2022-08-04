@@ -1,0 +1,42 @@
+
+<launch>
+<node pkg = 'tf' type = 'static_transform_publisher' name = 'base_link1' args = "0 0 0 0 0 0 /map /odom 200"/>
+
+   <rosparam file="$(find ebot_nav)/config/goals.yaml" />
+   <!--  <node pkg="ebot_nav" name="Cancel" type="Stop.py" output="screen"/>-->
+  <!--  ************** Global Parameters ***************  -->
+ <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+ <rosparam command="load"
+              ns="global_costmap"
+              file="$(find ebot_nav)/config/move_base/costmaps/costmap_common.yaml"/>
+    <rosparam command="load"
+              ns="local_costmap"
+              file="$(find ebot_nav)/config/move_base/costmaps/costmap_common.yaml"/>
+    <rosparam command="load"
+              file="$(find ebot_nav)/config/move_base/costmaps/local_costmap.yaml"/>
+    <rosparam command="load"
+              file="$(find ebot_nav)/config/move_base/costmaps/global_costmap.yaml"/>
+
+    <!-- planners -->
+    <rosparam command="load"
+              file="$(find ebot_nav)/config/move_base/planners/global_planner.yaml"/>
+    <rosparam command="load"
+              file="$(find ebot_nav)/config/move_base/planners/ROS_planner_params.yaml"/>
+
+
+    <remap from="cmd_vel" to="cmd_vel"/>
+    <remap from="odom" to="/odom"/>
+    <remap from="scan" to="/ebot/laser/scan"/>
+    <param name="base_global_planner" type="string" value="navfn/NavfnROS" />
+    <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>
+    <param name="move_base/DWAPlannerROS/yaw_goal_tolerance" value="1.0"/>
+    <param name="move_base/DWAPlannerROS/xy_goal_tolerance" value="1.0"/>
+    <param name="move_base/DWAPlannerROS/max_rot_vel" value="1.0"/>
+    <param name="move_base/DWAPlannerROS/acc_lim_theta" value="10.0"/>
+    <param name="controller_frequency" value="10.0"/>
+    <param name="navfn/NavfnROS/old_navfn_behaviour" value="true"/>
+
+  </node>
+
+
+</launch>
